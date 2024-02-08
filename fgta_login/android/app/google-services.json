@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "810623983861",
+    "project_id": "fgtalogin",
+    "storage_bucket": "fgtalogin.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:810623983861:android:f7f8db34a18db2093565bc",
+        "android_client_info": {
+          "package_name": "com.example.fgta_login"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "810623983861-5p0jnamjbo0uv4oasukmaocb4crud1in.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.fgta_login",
+            "certificate_hash": "d847153677535497f33f12fd97500f10a8b3fc9e"
+          }
+        },
+        {
+          "client_id": "810623983861-dbs4i8f1qvecumbbacpmofrjqg7gvi66.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAEUoQUrH0OAnYwcJXxquWted39F5Vg2vA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "810623983861-dbs4i8f1qvecumbbacpmofrjqg7gvi66.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "810623983861-cdck4k298u6b5b0d0dhd8igd5rhc50fb.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.fgtaLogin"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

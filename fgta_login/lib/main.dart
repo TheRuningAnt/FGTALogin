@@ -1,7 +1,10 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tiktok_sdk/flutter_tiktok_sdk.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 import 'TiktokHttp.dart';
+import 'firebase_options.dart';
 
 void main() {
   runApp(const MyApp());
@@ -78,7 +81,7 @@ class _MyHomePageState extends State<MyHomePage> {
       child: ElevatedButton(
         child: Text("Google 登录"),
         onPressed: (){
-          print("google");
+          googleLogin();
         },
       ),
     );
@@ -106,11 +109,7 @@ class _MyHomePageState extends State<MyHomePage> {
       child: ElevatedButton(
         child: Text("Tiktok 登录"),
         onPressed: (){
-
-
           tiktokLogin();
-
-          print("tiktok");
         },
       ),
     );
@@ -134,7 +133,7 @@ class _MyHomePageState extends State<MyHomePage> {
      return Container(
        width: 260,
        height: 40,
-       child: Text("登录信息:\n${_userData}",softWrap: true,),
+       child: Text("登录信息:\n${_userData}",softWrap: true,maxLines: 5,),
      );
   }
 
@@ -173,5 +172,22 @@ class _MyHomePageState extends State<MyHomePage> {
       print("tiktok 登录失败 " + result.errorMessage);
     }
     print("tiktok登录成功 " + result.toString());
+  }
+
+  //google登录
+  void googleLogin() async{
+    GoogleSignIn _googleSignIn = GoogleSignIn(
+      scopes: <String>[
+        'email',
+        'https://www.googleapis.com/auth/contacts.readonly',
+      ],
+    );
+    GoogleSignInAccount googleUser = await _googleSignIn.signIn();
+    print("googleUser:${googleUser.toString()}");
+    print("googleUser ID :${googleUser.id}");
+    _userData = googleUser.toString();
+    setState(() {
+
+    });
   }
 }

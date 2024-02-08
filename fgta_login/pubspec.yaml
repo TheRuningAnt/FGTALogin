@@ -37,6 +37,9 @@ dependencies:
   cupertino_icons: ^1.0.2
   flutter_tiktok_sdk: ^0.2.6
   dio: ^3.0.0
+  firebase_core: ^1.16.0
+  firebase_core_platform_interface: 4.5.1
+  google_sign_in: ^5.4.4
 
 dev_dependencies:
   flutter_test:
