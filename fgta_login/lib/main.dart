@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
@@ -217,6 +219,28 @@ class _MyHomePageState extends State<MyHomePage> {
 
   //apple登录 - Action
   void _appleLoginAction() async{
+
+    if(Platform.isAndroid){
+      showDialog(
+          barrierDismissible: false, //表示点击灰色背景的时候是否消失弹出框
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: const Text("提示"),
+              content: const Text("请在iOS设备上使用Apple登录"),
+              actions: <Widget>[
+                TextButton(
+                  child: const Text("确定"),
+                  onPressed: () {
+                    Navigator.pop(context, "Ok");
+                  },
+                )
+              ],
+            );
+          });
+      return;
+    }
+
     final credential = await SignInWithApple.getAppleIDCredential(
       scopes: [
         AppleIDAuthorizationScopes.email,
