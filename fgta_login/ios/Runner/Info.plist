@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CADisableMinimumFrameDurationOnPhone</key>
+	<true/>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
@@ -20,9 +22,36 @@
 	<string>$(FLUTTER_BUILD_NAME)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>aw7p7k5kjcuhthn9</string>
+				<string>fb925337525864482</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<key>FacebookAppID</key>
+	<string>925337525864482</string>
+	<key>FacebookClientToken</key>
+	<string>8e47407fb0807014c6893c72b46e0df7</string>
+	<key>FacebookDisplayName</key>
+	<string>FGTA登录测试</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>tiktokopensdk</string>
+		<string>tiktoksharesdk</string>
+		<string>snssdk1180</string>
+		<string>snssdk1233</string>
+	</array>
 	<key>LSRequiresIPhoneOS</key>
+	<true/>
+	<key>TikTokAppID</key>
+	<string>aw7p7k5kjcuhthn9</string>
+	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
@@ -43,27 +72,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>CADisableMinimumFrameDurationOnPhone</key>
-	<true/>
-	<key>UIApplicationSupportsIndirectInputEvents</key>
-	<true/>
-    <key>LSApplicationQueriesSchemes</key>
-    <array>
-        <string>tiktokopensdk</string>
-        <string>tiktoksharesdk</string>
-        <string>snssdk1180</string>
-        <string>snssdk1233</string>
-    </array>
-    <key>TikTokAppID</key>
-    <string>aw7p7k5kjcuhthn9</string>
-    <key>CFBundleURLTypes</key>
-    <array>
-      <dict>
-        <key>CFBundleURLSchemes</key>
-        <array>
-          <string>aw7p7k5kjcuhthn9</string>
-        </array>
-      </dict>
-    </array>
 </dict>
 </plist>

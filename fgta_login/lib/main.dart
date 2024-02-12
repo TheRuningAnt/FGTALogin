@@ -1,7 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_tiktok_sdk/flutter_tiktok_sdk.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 import 'TiktokHttp.dart';
 import 'firebase_options.dart';
@@ -73,7 +75,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  //google 登录
+  //google 登录组件
   Widget _createGoogleLogin(){
     return Container(
       width: 260,
@@ -81,13 +83,13 @@ class _MyHomePageState extends State<MyHomePage> {
       child: ElevatedButton(
         child: Text("Google 登录"),
         onPressed: (){
-          googleLogin();
+          _googleLoginAction();
         },
       ),
     );
   }
 
-  //facebook 登录
+  //facebook 登录组件
   Widget _createFacebookLogin(){
     return Container(
       width: 260,
@@ -95,13 +97,13 @@ class _MyHomePageState extends State<MyHomePage> {
       child: ElevatedButton(
         child: Text("Facebook 登录"),
         onPressed: (){
-          print("facebook");
+          _facebookLoginAction();
         },
       ),
     );
   }
 
-  //tiktok 登录
+  //tiktok 登录组件
   Widget _createTiktokLogin(){
     return Container(
       width: 260,
@@ -109,13 +111,13 @@ class _MyHomePageState extends State<MyHomePage> {
       child: ElevatedButton(
         child: Text("Tiktok 登录"),
         onPressed: (){
-          tiktokLogin();
+          _tiktokLoginAction();
         },
       ),
     );
   }
 
-  //apple 登录
+  //apple 登录组件
   Widget _createAppleLogin(){
     return Container(
       width: 260,
@@ -123,12 +125,13 @@ class _MyHomePageState extends State<MyHomePage> {
       child: ElevatedButton(
         child: Text("Apple 登录"),
         onPressed: (){
-          print("apple");
+          _appleLoginAction();
         },
       ),
     );
   }
 
+  //结果展示组件
   Widget _loginResult(){
      return Container(
        width: 260,
@@ -137,8 +140,8 @@ class _MyHomePageState extends State<MyHomePage> {
      );
   }
 
-  //tiktok登录
-  void tiktokLogin() async{
+  //tiktok登录 - Action
+  void _tiktokLoginAction() async{
     final result = await TikTokSDK.instance.login(
       permissions: {
         TikTokPermissionType.userInfoBasic,
@@ -174,8 +177,8 @@ class _MyHomePageState extends State<MyHomePage> {
     print("tiktok登录成功 " + result.toString());
   }
 
-  //google登录
-  void googleLogin() async{
+  //google登录 - Action
+  void _googleLoginAction() async{
     GoogleSignIn _googleSignIn = GoogleSignIn(
       scopes: <String>[
         'email',
@@ -190,4 +193,64 @@ class _MyHomePageState extends State<MyHomePage> {
 
     });
   }
+
+  //facebook登录 - Action
+  void _facebookLoginAction() async{
+    final LoginResult result = await FacebookAuth.instance.login(); // by default we request the email and the public profile
+    if (result.status == LoginStatus.success) {
+      // you are logged
+      final AccessToken accessToken = result.accessToken;
+
+      Map<String, dynamic> userData = await FacebookAuth.instance.getUserData();
+      _userData = userData.toString();
+      setState(() {
+
+      });
+      print("facebook 获取登录用户信息" + userData.toString());
+
+    } else {
+      print("facebook 登录失败");
+      print(result.status);
+      print(result.message);
+    }
+  }
+
+  //apple登录 - Action
+  void _appleLoginAction() async{
+    final credential = await SignInWithApple.getAppleIDCredential(
+      scopes: [
+        AppleIDAuthorizationScopes.email,
+        AppleIDAuthorizationScopes.fullName,
+      ],
+    );
+    if (credential != null) {
+      _userData = credential.toString();
+
+      print(credential.toString());
+      print(credential.email);
+      print(credential.givenName);
+      print(credential.userIdentifier);
+
+      setState(() {
+      });
+
+      /*
+      * Apple 仅在您的应用程序首次登录设备时返回全名和电子邮件，此后的任何登录都会返回空值
+      * 第二次givenName会返回空值
+      * */
+      // print("credential  ===== 苹果登录成功");
+      // print("userIdentifier = " + credential.userIdentifier);
+      // // print("givenName = " + credential.givenName == null?"":credential.givenName == null);
+      // print("familyName = " + credential.familyName);
+      // print(credential.familyName);
+      //
+      // print("authorizationCode = " + credential.authorizationCode);
+      // print("email = " + credential.email);
+      // print("identityToken = " + credential.identityToken);
+      // print("state = " + credential.state);
+
+    }
+  }
+
+
 }
