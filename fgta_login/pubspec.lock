@@ -256,6 +256,38 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "3.1.4"
+  in_app_purchase:
+    dependency: "direct main"
+    description:
+      name: in_app_purchase
+      sha256: bdda02b5b11b56d5e29c7f0c57c433db3452b0c8ce1c37cbfcf1de52946efd9f
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "3.1.11"
+  in_app_purchase_android:
+    dependency: transitive
+    description:
+      name: in_app_purchase_android
+      sha256: c4b84caa4e2c7ffebda444c5033fd8423cc3a45a6e1066929bbbcd4daf665db5
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.3.0+15"
+  in_app_purchase_platform_interface:
+    dependency: transitive
+    description:
+      name: in_app_purchase_platform_interface
+      sha256: "5168afbc54f406f741252b66d41872c1193a0066a6edcb587176290b92e2d537"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "1.3.6"
+  in_app_purchase_storekit:
+    dependency: transitive
+    description:
+      name: in_app_purchase_storekit
+      sha256: "88afd256c7605d431f0ce29d0161f9554851f90ecb92ceb9e18196c4e7858d52"
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.3.6+7"
   js:
     dependency: transitive
     description:
@@ -264,6 +296,14 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.6.5"
+  json_annotation:
+    dependency: transitive
+    description:
+      name: json_annotation
+      sha256: b10a7b2ff83d83c777edba3c6a0f97045ddadd56c944e1a23a3fdf43a1bf4467
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "4.8.1"
   lints:
     dependency: transitive
     description:

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:fgta_login/BuyEngine.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
@@ -39,22 +40,24 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
 
   String _userData;
+  BuyEngin _buyEngin;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
     //Tiktok配置
     TikTokSDK.instance.setup(clientKey: 'aw7p7k5kjcuhthn9');
 
+    _buyEngin = BuyEngin();
+    _buyEngin.initializeInAppPurchase();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("海外平台第三方登录"),
+        title: Text("Flutter海外平台第三方登录及支付"),
       ),
       body: Container(
         width: MediaQuery.of(context).size.width,
@@ -62,15 +65,19 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             SizedBox(height: 120),
-            _createGoogleLogin(),
+            _createGoogleLoginWidget(),
             SizedBox(height: 20),
-            _createFacebookLogin(),
+            _createFacebookLoginWidget(),
             SizedBox(height: 20),
-            _createTiktokLogin(),
+            _createTiktokLoginWidget(),
             SizedBox(height: 20),
-            _createAppleLogin(),
+            _createAppleLoginWidget(),
             SizedBox(height: 20),
-            _userData == null?Container():_loginResult()
+            _createGooglePayWidget(),
+            SizedBox(height: 20),
+            _createApplePayWidget(),
+            SizedBox(height: 20),
+            _userData == null?Container():_loginResultWidget()
           ],
         ),
       ),
@@ -78,7 +85,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   //google 登录组件
-  Widget _createGoogleLogin(){
+  Widget _createGoogleLoginWidget(){
     return Container(
       width: 260,
       height: 40,
@@ -92,7 +99,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   //facebook 登录组件
-  Widget _createFacebookLogin(){
+  Widget _createFacebookLoginWidget(){
     return Container(
       width: 260,
       height: 40,
@@ -106,7 +113,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   //tiktok 登录组件
-  Widget _createTiktokLogin(){
+  Widget _createTiktokLoginWidget(){
     return Container(
       width: 260,
       height: 40,
@@ -120,7 +127,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   //apple 登录组件
-  Widget _createAppleLogin(){
+  Widget _createAppleLoginWidget(){
     return Container(
       width: 260,
       height: 40,
@@ -133,8 +140,36 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  //google支付 组件
+  Widget _createGooglePayWidget(){
+    return Container(
+      width: 260,
+      height: 40,
+      child: ElevatedButton(
+        child: Text("google支付"),
+        onPressed: (){
+          _googlePayAction();
+        },
+      ),
+    );
+  }
+
+  //苹果支付 组件
+  Widget _createApplePayWidget(){
+    return Container(
+      width: 260,
+      height: 40,
+      child: ElevatedButton(
+        child: Text("apple支付"),
+        onPressed: (){
+          _applePayAction();
+        },
+      ),
+    );
+  }
+
   //结果展示组件
-  Widget _loginResult(){
+  Widget _loginResultWidget(){
      return Container(
        width: 260,
        height: 40,
@@ -220,26 +255,7 @@ class _MyHomePageState extends State<MyHomePage> {
   //apple登录 - Action
   void _appleLoginAction() async{
 
-    if(Platform.isAndroid){
-      showDialog(
-          barrierDismissible: false, //表示点击灰色背景的时候是否消失弹出框
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              title: const Text("提示"),
-              content: const Text("请在iOS设备上使用Apple登录"),
-              actions: <Widget>[
-                TextButton(
-                  child: const Text("确定"),
-                  onPressed: () {
-                    Navigator.pop(context, "Ok");
-                  },
-                )
-              ],
-            );
-          });
-      return;
-    }
+    if(checkPlatform(checkiOS: true, message: "请在iOS设备上进行Apple登录"))return;
 
     final credential = await SignInWithApple.getAppleIDCredential(
       scopes: [
@@ -257,23 +273,54 @@ class _MyHomePageState extends State<MyHomePage> {
 
       setState(() {
       });
-
-      /*
-      * Apple 仅在您的应用程序首次登录设备时返回全名和电子邮件，此后的任何登录都会返回空值
-      * 第二次givenName会返回空值
-      * */
-      // print("credential  ===== 苹果登录成功");
-      // print("userIdentifier = " + credential.userIdentifier);
-      // // print("givenName = " + credential.givenName == null?"":credential.givenName == null);
-      // print("familyName = " + credential.familyName);
-      // print(credential.familyName);
-      //
-      // print("authorizationCode = " + credential.authorizationCode);
-      // print("email = " + credential.email);
-      // print("identityToken = " + credential.identityToken);
-      // print("state = " + credential.state);
-
     }
+  }
+
+  //google 支付 - action
+  void _googlePayAction(){
+    if(checkPlatform(checkAndroid:true, message: "请在安卓设备上进行google支付"))return;
+    _buyEngin.buyProduct("应用内商品ID");
+  }
+
+  //apple 支付 - action
+  void _applePayAction(){
+    if(checkPlatform(checkiOS:true, message: "请在ios设备上进行Apple支付"))return;
+    _buyEngin.buyProduct("应用内商品ID");
+  }
+
+  bool checkPlatform({bool checkAndroid = false,bool checkiOS = false,String message = ""}){
+    bool checkUnable = false;
+    if(checkiOS){
+      if(Platform.isAndroid){
+        checkUnable = true;
+      }
+    }
+    if(checkAndroid){
+      if(Platform.isIOS){
+        checkUnable = true;
+      }
+    }
+
+    if(checkUnable){
+      showDialog(
+          barrierDismissible: false, //表示点击灰色背景的时候是否消失弹出框
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: Text("提示"),
+              content: Text(message),
+              actions: <Widget>[
+                TextButton(
+                  child: const Text("确定"),
+                  onPressed: () {
+                    Navigator.pop(context, "Ok");
+                  },
+                )
+              ],
+            );
+          });
+    }
+    return checkUnable;
   }
 
 
